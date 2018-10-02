@@ -58,8 +58,8 @@ if s is None:
 
 info = open('hi.txt', 'r')
 theFile = info.read(100)
-theFile.strip('\n')
-theFile.encode()
+theFile = theFile.strip('\n')
+theFile = theFile.encode()
 info.close()
 
 #send = theFile.encode()
