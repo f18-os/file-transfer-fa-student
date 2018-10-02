@@ -56,9 +56,10 @@ if s is None:
     print('could not open socket')
     sys.exit(1)
 
-info = open('hi.txt', 'rb')
-theFile = info.read(100)#.encode()
-theFile.strip()
+info = open('hi.txt', 'r')
+theFile = info.read(100)
+theFile.strip('\n')
+theFile.encode()
 info.close()
 
 #send = theFile.encode()
