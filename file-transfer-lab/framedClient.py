@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 
 # Echo client program
-import socket, sys, re
+import socket, sys, re, os
 
 sys.path.append("../lib")       # for params
 import params
@@ -55,18 +55,23 @@ for res in socket.getaddrinfo(serverHost, serverPort, socket.AF_UNSPEC, socket.S
 if s is None:
     print('could not open socket')
     sys.exit(1)
+fileName = input('file:')
+# there's no reason to be scared of zero length files
+info = open(fileName, 'rb')
+theFile = info.read()
+if (os.stat(fileName).st_size == 0): #check size of file 
+        print("no zero length files")
+        sys.exit(1)
+theFile = theFile.strip()
+#theFile = theFile.encode()
 
-info = open('hi.txt', 'r')
-theFile = info.read(100)
-theFile = theFile.strip('\n')
-theFile = theFile.encode()
-info.close()
 
 #send = theFile.encode()
-print("sending hello world")
-framedSend(s, theFile, debug)
-print("received:", framedReceive(s, debug))
-
+framedSend(s, fileName.encode(), debug) #send header(just name)
+framedSend(s, theFile, debug) #send actual file
+print("sent something")
+info.close()
+print("close")
 #print("sending hello world")
 #framedSend(s, b"hello world", debug)
 #print("received:", framedReceive(s, debug))

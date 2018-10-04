@@ -30,13 +30,29 @@ while True:
 
     from framedSock import framedSend, framedReceive
 
-    if not os.fork():
+    rc = os.fork()
+
+    #if not os.fork():
+    if rc == 0:
         print("new child process handling connection from", addr)
         while True:
-            payload = framedReceive(sock, debug)
-            if debug: print("rec'd: ", payload)
-            if not payload:
+            header = framedReceive(sock, debug) #recieve header 
+            header = header.decode() #decode from bytes to str
+            if debug: 
+                print("rec'd: ", header)
+            if not header:
                 if debug: print("child exiting")
                 sys.exit(0)
+
+
+            #fl = open()
+
+            else:
+                payload = framedReceive(sock, debug) #actual data
+                write = open('new'+header, 'wb') # write file
+                write.write(payload)
+
+
             payload += b"!"             # make emphatic!
             framedSend(sock, payload, debug)
+
